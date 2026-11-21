@@ -7,13 +7,18 @@ export const bdConfigurada = () => !!credencialesBD();
 export async function sb() {
     if (cliente || intento) return cliente;
     const c = credencialesBD();
-    if (!c) return null;
+    if (!c) {
+        console.info('[Supabase] Sin credenciales válidas → modo LOCAL');
+        return null;
+    }
+    console.info('[Supabase] Conectando a', c.url);
     intento = true;
     try {
         const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm');
         cliente = createClient(c.url, c.key, { auth: { persistSession: true, autoRefreshToken: true } });
+        console.info('[Supabase] Cliente creado OK');
     } catch (e) {
-        console.warn('Supabase no disponible, se usa el modo local:', e);
+        console.warn('[Supabase] No disponible, se usa el modo local:', e);
         document.dispatchEvent(new CustomEvent('bd:error', { detail: 'No se pudo conectar con Supabase. Usando datos locales.' }));
     }
     return cliente;

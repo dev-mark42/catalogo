@@ -1,7 +1,7 @@
 // Service Worker de Elite Sport (un solo proyecto, raíz del repositorio; rutas relativas para GitHub Pages).
 // HTML y JS/CSS propios: red primero con respaldo en caché (siempre ves lo último y funciona offline).
 // Imágenes y recursos externos: caché primero.
-const V = 'elite-sport-v5';
+const V = 'elite-sport-v6';
 const SHELL = [
  "assets/data/productos.json",
  "assets/img/icon-192.png",
@@ -58,6 +58,10 @@ const SHELL = [
 ];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => Promise.allSettled(['./'].concat(SHELL).map(u => c.add(u))))); self.skipWaiting(); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(x => x !== V).map(x => caches.delete(x))))); self.clients.claim(); });
+
+// Permite que la página pida "actualízate ya" al detectar una versión nueva
+self.addEventListener('message', e => { if (e.data === 'skipWaiting') self.skipWaiting(); });
+
 self.addEventListener('fetch', e => {
   const r = e.request;
   if (r.method !== 'GET') return;

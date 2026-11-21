@@ -237,3 +237,72 @@ i.liga-ico{display:inline-flex;align-items:center;justify-content:center;color:v
  .zm-box{grid-template-columns:1fr 1fr;max-height:96dvh}.zm-img{aspect-ratio:auto;min-height:260px}.zm-info{min-height:0;padding:18px}
  .side{padding-top:76px}
 }
+/* ============================================================
+   FIX MÓVIL + RENDIMIENTO (solo añadidos, no reemplaza nada)
+   ============================================================ */
+
+/* 1) Evita que overflow-x rompa el scroll vertical en móviles iOS/Android */
+html, body { overflow-x: clip; }
+@media (max-width: 991.98px) {
+  body { overflow-x: clip; }
+  .lg-wrap { overflow-x: clip; }
+}
+
+/* 2) Refuerza que el body pueda scrollear si algún script olvidó quitar no-scroll */
+body.no-scroll { overflow: hidden !important; }
+body:not(.no-scroll) { overflow-y: auto !important; overflow-x: clip !important; }
+
+/* 3) Aligera efectos pesados SOLO en celular/tablet (no en laptop) */
+@media (max-width: 991.98px) and (hover: none) {
+  /* Fondo estadio: pausa animaciones continuas */
+  .bg-stadium,
+  .bg-pitch,
+  .bg-pitch .ln > *,
+  .bg-pitch .pulso,
+  .bg-beams i,
+  .bg-dust i,
+  .bg-roll svg {
+    animation: none !important;
+    will-change: auto !important;
+  }
+  .bg-pitch .ln > * { stroke-dashoffset: 0 !important; }
+  .bg-pitch .pulso,
+  .bg-dust { display: none !important; }
+  .bg-roll { opacity: .25; }
+
+  /* Blur caro: reduce el radio para no matar la GPU */
+  .web-header, .app-header, .bottom-nav, .side,
+  .glass-card, .cat-card, .p-card, .zm-box {
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+  }
+
+  /* Glitch decorativo: apágalo en móvil (solo login) */
+  .glitch::before, .glitch::after { display: none !important; }
+
+  /* Efectos hover que solo se activan con mouse: anúlalos en touch */
+  .p-card:hover { transform: none !important; }
+  .cat-card:hover { transform: none !important; }
+  .p-card:hover .p-img img,
+  .cat-card:hover img { transform: none !important; }
+
+  /* Reducir sombras glow grandes en móvil (caras de repintar) */
+  .p-card:hover, .btn-neon:hover, .btn-icon:hover {
+    box-shadow: var(--sombra) !important;
+  }
+}
+
+/* 4) Respeta usuarios con "reducir movimiento" también en móvil */
+@media (max-width: 991.98px) and (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* 5) El wipe y el splash NUNCA deben bloquear clics cuando terminan */
+.wipe, #splash { pointer-events: none; }
+.wipe.activo, #splash:not(.oculto) { pointer-events: auto; }
+
+/* 6) El catálogo siempre puede scrollear verticalmente aunque haya modales cerrados */
+#vista-catalogo, #contenedorCliente {
+  overflow: visible !important;
+  max-height: none !important;
+}
