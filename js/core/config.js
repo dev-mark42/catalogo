@@ -2,17 +2,17 @@
 import { normalizarImagen } from '../../semana2/03-fetch-lazyloading-dropbox/dropbox.js';
 import { limpiarTexto as L } from '../../semana2/05-seguridad-xss-subida-imagen/seguridad-xss.js';
 
-export const WHATSAPP = '59170000000';
+export const WHATSAPP = '5916072154';
 export const ADMIN_USER = 'admin';
-export const ADMIN_PASS = 'admin123';          // solo modo local (sin Supabase)
-export const ADMIN_EMAIL_DOMINIO = '@elitesport.com';
+export const ADMIN_PASS = 'elitesportalexydania';          // solo modo local (sin Supabase)
+export const ADMIN_EMAIL_DOMINIO = 'admin@elitesport.com';
 
 /* ---------- Supabase ----------
    Opción A: pega aquí tu URL y tu anon key (Project Settings → API).
    Opción B: déjalo así y pégalos desde Panel admin → Configuración → Base de datos.
    Si no hay credenciales, la app funciona en MODO LOCAL (localStorage). */
-export const SUPABASE_URL = '';   // ej. 'https://abcdefgh.supabase.co'
-export const SUPABASE_KEY = '';   // anon / publishable key
+export const SUPABASE_URL = 'https://mogyzqznpcpwsuzcujyj.supabase.co/rest/v1/';   // ej. 'https://abcdefgh.supabase.co'
+export const SUPABASE_KEY = 'sb_publishable_3WMaNpvU3F-DJCB4yDEvBA_XVpH88qr';   // anon / publishable key
 export function credencialesBD() {
     let o = {};
     try { o = JSON.parse(localStorage.getItem('eliteSupabase')) || {}; } catch { /* sin datos */ }
